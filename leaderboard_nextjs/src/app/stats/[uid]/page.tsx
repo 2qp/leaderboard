@@ -1,8 +1,8 @@
 import { Card } from "@/components/ui/card";
-import { KillCountForm } from "./form";
 import { notFound } from "next/navigation";
+import { KillCountForm } from "./form";
 
-const getData = async (id: number): Promise<Stats> => {
+const getData = async (id: number): Promise<UserData> => {
   try {
     const res = await fetch(`http://localhost:3001/stats/${id}`, {
       next: { revalidate: 0 },
@@ -28,7 +28,7 @@ const Page: PageType = async ({ params: { uid } }) => {
   return (
     <>
       <Card className="p-5">
-        <KillCountForm killCount={data.records?.killCount} userId={+uid} />
+        <KillCountForm killCount={data.killCount} userId={+uid} />
       </Card>
     </>
   );

@@ -15,44 +15,50 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { useRef } from "react";
+import { useFormState, useFormStatus } from "react-dom";
+import { mutateKillCount } from "./actions";
+import { formSchema } from "./formSchema";
+import { LoadingSpinner } from "@/components/loading-spinner/loading-spinner";
 
-const FormSchema = z.object({
-  killCount: z.number().min(0, {
-    message: "Kill count must be at least 0.",
-  }),
-});
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
 
-type KillCountFormProps = Pick<UserData, "killCount" | "userId">;
+  return (
+    <Button type="submit" disabled={pending}>
+      {!pending && <span className="">Add</span>}
+      {pending && <LoadingSpinner />}
+    </Button>
+  );
+};
 
+type KillCountFormProps = Pick<UserData, "killCount" | "userId"> & {};
 type KillCountFormType = (props: KillCountFormProps) => JSX.Element;
 
+const initialState = {
+  message: "",
+};
+
 const KillCountForm: KillCountFormType = ({ userId, killCount }) => {
+  const [state, formAction] = useFormState(mutateKillCount, initialState);
+
   const { back } = useRouter();
 
+  const formRef = useRef<HTMLFormElement>(null);
+
   //
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
+      id: userId,
       killCount: killCount,
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  }
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form ref={formRef} action={formAction} className="w-2/3 space-y-6">
         <FormField
           control={form.control}
           name="killCount"
@@ -60,17 +66,23 @@ const KillCountForm: KillCountFormType = ({ userId, killCount }) => {
             <FormItem>
               <FormLabel>KillCount</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input type="number" placeholder="shadcn" {...field} />
               </FormControl>
               <FormDescription>
                 {" This is " + userId + "'s kill count."}
               </FormDescription>
-              <FormMessage />
+              <FormMessage>
+                {state?.message != "" && state?.message}
+              </FormMessage>
             </FormItem>
           )}
         />
+        <input type="hidden" {...form.register("id")} value={userId} />
         <div className="flex gap-2">
-          <Button type="submit">Submit</Button>
+          {/* <Button type="submit" disabled={loading}>
+            Submit
+          </Button> */}
+          <SubmitButton />
           <Button type="button" variant="secondary" onClick={back}>
             Cancel
           </Button>
