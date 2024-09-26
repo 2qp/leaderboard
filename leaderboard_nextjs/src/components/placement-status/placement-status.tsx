@@ -12,9 +12,9 @@ const PlacementStatus: PlacementStatusType = ({ status = 'NEUTRAL' }) => {
     case "NEW":
       return <Dot />;
     case "UP":
-      return <ChevronUp />;
+      return <ChevronUp color="green" />;
     case "DOWN":
-      return <ChevronDown />;
+      return <ChevronDown color="red"/>
     case "NEUTRAL":
       return <DashIcon />;
   }
