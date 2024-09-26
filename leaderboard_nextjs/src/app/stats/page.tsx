@@ -5,12 +5,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 const getData = async (): Promise<Stats[]> => {
   try {
-    const res = await fetch("http://localhost:3001/stats/top30", {
+    const res = await fetch("http://localhost:3001/stats/top-30", {
       next: { revalidate: 0 },
     });
 
     return await res.json();
   } catch (error) {
+    console.log(error);
     return notFound();
   }
 };

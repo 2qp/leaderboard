@@ -15,7 +15,7 @@ interface UserData {
 }
 
 type Stats = {
-  id: string;
+  place: number;
   records: UserData;
   history?: UserDataHistory;
 };
