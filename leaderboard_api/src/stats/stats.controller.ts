@@ -17,6 +17,21 @@ import { Stat } from './entities/stat.entity';
 export class StatsController {
   constructor(private readonly statsService: StatsService) {}
 
+  @Get('top-3')
+  getTop3() {
+    return this.statsService.getTop3();
+  }
+
+  @Get('top-30')
+  getTop30(): Stat[] {
+    return this.statsService.getTop30();
+  }
+
+  @Get('history')
+  getHistory(): { [k: string]: StatHistory } {
+    return this.statsService.getHistory();
+  }
+
   // @Post()
   // create(@Body() createStatDto: CreateStatDto) {
   //   return this.statsService.create(createStatDto);
@@ -27,10 +42,10 @@ export class StatsController {
   //   return this.statsService.findAll();
   // }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.statsService.findOne(+id);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.statsService.findOne(+id);
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateStatDto: UpdateStatDto) {
@@ -41,19 +56,4 @@ export class StatsController {
   // remove(@Param('id') id: string) {
   //   return this.statsService.remove(+id);
   // }
-
-  @Get('top3')
-  getTop3() {
-    return this.statsService.getTop3();
-  }
-
-  @Get('top30')
-  getTop30() : Stat[] {
-    return this.statsService.getTop30();
-  }
-
-  @Get('history')
-  getHistory(): { [k: string]: StatHistory } {
-    return this.statsService.getHistory();
-  }
 }

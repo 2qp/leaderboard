@@ -29,7 +29,8 @@ export class StatsService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} stat`;
+    const userStat = this.userStats.find((stat) => stat.userId === id);
+    return userStat;
   }
 
   update(id: number, updateStatDto: UpdateStatDto) {
