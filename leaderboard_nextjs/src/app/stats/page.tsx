@@ -1,16 +1,30 @@
-import { fetchFromAPI } from "@/lib/api";
+import { notFound } from "next/navigation";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+const getData = async (): Promise<Stats[]> => {
+  try {
+    const res = await fetch("http://localhost:3001/stats/top30", {
+      next: { revalidate: 0 },
+    });
+
+    return await res.json();
+  } catch (error) {
+    return notFound();
+  }
+};
 
 type PageType = (props: {}) => Promise<JSX.Element>;
 
 const Page: PageType = async () => {
-  const res = await fetch("http://localhost:3001/stats/top30",{ next: { revalidate: 0 } });
-  const data = await res.json();
+  const data = await getData();
 
   return (
-    <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data as any} />
+    <div className="container mx-auto py-10 ">
+      <ScrollArea className="h-[80vh] rounded-md border">
+        <DataTable columns={columns} data={data} />
+      </ScrollArea>
     </div>
   );
 };
