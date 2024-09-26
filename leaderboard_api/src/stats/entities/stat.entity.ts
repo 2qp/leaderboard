@@ -3,7 +3,7 @@ import { UserStat } from './userStat.entity';
 
 export class Stat {
   constructor(
-    public id: string,
+    public place: number,
     public records: UserStat,
     public history: StatHistory,
   ) {}

@@ -35,6 +35,7 @@ export class StatsService {
   update(id: number, updateStatDto: UpdateStatDto) {
     const { killCount } = updateStatDto;
     const userStat = this.userStats.find((stat) => stat.userId === id);
+    const userHistory = this.history.get(id);
 
     if (userStat) {
       const previousKillCount = userStat.killCount;
@@ -45,8 +46,9 @@ export class StatsService {
         id,
         previousKillCount,
         userStat.killCount,
-        null,
-        null,
+        userHistory?.placement,
+        userHistory?.status,
+        userHistory?.timestamp,
       );
 
       this.history.set(id, newEntry);
@@ -69,7 +71,7 @@ export class StatsService {
     const sortedWithHistory = this.userStats
       .sort((a, b) => b.killCount - a.killCount)
       .slice(0, 30)
-      .map((s, index) => new Stat(`${index}`, s, this.history.get(s.userId)));
+      .map((s, index) => new Stat(index + 1, s, this.history.get(s.userId)));
 
     return sortedWithHistory;
   }
