@@ -1,0 +1,23 @@
+services:
+  next:
+    build:
+      context: ./leaderboard_nextjs
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - nest
+    environment:
+      - NEXT_PUBLIC_API_URL=http://nest:3001
+      - NODE_TLS_REJECT_UNAUTHORIZED = "0"
+    links:
+      - 'nest'
+
+  nest:
+    build:
+      context: ./leaderboard_api
+      dockerfile: Dockerfile
+    ports:
+      - '3001:3001'
+    environment:
+      - NODE_ENV=production
