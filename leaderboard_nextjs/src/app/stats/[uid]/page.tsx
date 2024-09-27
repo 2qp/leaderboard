@@ -5,7 +5,7 @@ import { KillCountForm } from "./form";
 const getData = async (id: number): Promise<UserData> => {
   try {
     const res = await fetch(`http://localhost:3001/stats/${id}`, {
-      next: { revalidate: 0 },
+      next: { tags: ["all"] },
     });
 
     return await res.json();

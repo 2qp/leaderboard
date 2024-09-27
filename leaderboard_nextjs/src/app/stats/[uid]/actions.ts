@@ -2,10 +2,11 @@
 
 import { redirect } from "next/navigation";
 import { formSchema } from "./formSchema";
+import { revalidateTag } from "next/cache";
 
-function delay(ms: number) {
+const delay = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
+};
 
 export type FormState = {
   message: string;
@@ -55,5 +56,6 @@ export async function mutateKillCount(
     return { message: "issue with submission" };
   }
 
+  revalidateTag("all");
   redirect("/stats");
 }

@@ -4,11 +4,12 @@ import { DataTable } from "./data-table";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { BarChartItem, TopCard } from "@/components/top-card/top-card";
 import ordinal from "ordinal";
+import { Card } from "@/components/ui/card";
 
 const getTop30Data = async (): Promise<Stats[]> => {
   try {
     const res = await fetch("http://localhost:3001/stats/top-30", {
-      next: { revalidate: 0 },
+      next: { tags: ["all"] },
     });
 
     return await res.json();
@@ -21,7 +22,7 @@ const getTop30Data = async (): Promise<Stats[]> => {
 const getTop3Data = async (): Promise<UserData[]> => {
   try {
     const res = await fetch("http://localhost:3001/stats/top-3", {
-      next: { revalidate: 0 },
+      next: { tags: ["all"] },
     });
 
     return await res.json();
@@ -44,9 +45,12 @@ const Page: PageType = async () => {
   }));
 
   return (
-    <div className="container mx-auto py-10 ">
-      <TopCard data={chartDataWithPlacement} />
-      <ScrollArea className="h-[80vh] rounded-md border">
+    <div className="container mx-auto  flex flex-col gap-5">
+      <Card className="bg-transparent">
+        <TopCard data={chartDataWithPlacement} />
+      </Card>
+
+      <ScrollArea className="h-[65vh] rounded-md border">
         <DataTable columns={columns} data={data} />
       </ScrollArea>
     </div>
