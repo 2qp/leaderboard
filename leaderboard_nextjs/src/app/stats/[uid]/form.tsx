@@ -33,14 +33,18 @@ const SubmitButton = () => {
   );
 };
 
-type KillCountFormProps = Pick<UserData, "killCount" | "userId"> & {};
+type KillCountFormProps = Pick<
+  UserData,
+  "killCount" | "userId" | "userName"
+> & {};
+
 type KillCountFormType = (props: KillCountFormProps) => JSX.Element;
 
 const initialState = {
   message: "",
 };
 
-const KillCountForm: KillCountFormType = ({ userId, killCount }) => {
+const KillCountForm: KillCountFormType = ({ userId, killCount, userName }) => {
   const [state, formAction] = useFormState(mutateKillCount, initialState);
 
   const { back } = useRouter();
@@ -69,7 +73,7 @@ const KillCountForm: KillCountFormType = ({ userId, killCount }) => {
                 <Input type="number" placeholder="shadcn" {...field} />
               </FormControl>
               <FormDescription>
-                {" This is " + userId + "'s kill count."}
+                {" This is " + userName + "'s kill count."}
               </FormDescription>
               <FormMessage>
                 {state?.message != "" && state?.message}
@@ -79,9 +83,6 @@ const KillCountForm: KillCountFormType = ({ userId, killCount }) => {
         />
         <input type="hidden" {...form.register("id")} value={userId} />
         <div className="flex gap-2">
-          {/* <Button type="submit" disabled={loading}>
-            Submit
-          </Button> */}
           <SubmitButton />
           <Button type="button" variant="secondary" onClick={back}>
             Cancel

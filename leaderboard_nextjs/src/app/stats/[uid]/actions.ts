@@ -39,7 +39,7 @@ export async function mutateKillCount(
     };
   }
 
-  await delay(2000);
+  // await delay(2000);
   const response = await fetch(
     `http://localhost:3001/stats/${parsed.data.id}`,
     {

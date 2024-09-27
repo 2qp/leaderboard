@@ -12,7 +12,6 @@ const columns: ColumnDef<Stats>[] = [
     header: "place",
     cell: ({ row, getValue }) => {
       const history = row?.original?.history;
-
       const place = getValue() as number;
       const placement = ordinal(place);
 
@@ -29,13 +28,15 @@ const columns: ColumnDef<Stats>[] = [
     header: "name",
     cell: ({ row, renderValue }) => {
       const uid = row.original.records.userId;
+      const name = row.original.records.userName;
+
       return (
         <div className="flex gap-2 items-center">
           <Link
             className="flex gap-2 items-center"
             href={{ pathname: "/stats/" + uid }}
           >
-            <RandomAvatar />
+            <RandomAvatar name={name} />
 
             <div>{`${renderValue()}`}</div>
           </Link>

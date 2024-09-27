@@ -28,7 +28,11 @@ const Page: PageType = async ({ params: { uid } }) => {
   return (
     <>
       <Card className="p-5">
-        <KillCountForm killCount={data.killCount} userId={+uid} />
+        <KillCountForm
+          killCount={data.killCount}
+          userId={+uid}
+          userName={data.userName}
+        />
       </Card>
     </>
   );
