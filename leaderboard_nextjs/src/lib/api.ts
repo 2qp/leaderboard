@@ -1,16 +1,9 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const fetchFromAPI = async <T>(
-  endpoint: string,
-  options?: RequestInit
-): Promise<T> => {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+const endpoints = {
+  top30: `${API_BASE_URL}/stats/top-30`,
+  top3: `${API_BASE_URL}/stats/top-3`,
+  stats: `${API_BASE_URL}/stats`,
+} as const;
 
-  if (!response.ok) {
-    throw new Error(`Error fetching from API: ${response.statusText}`);
-  }
-
-  return response.json() as Promise<T>;
-};
-
-export { fetchFromAPI };
+export { endpoints };

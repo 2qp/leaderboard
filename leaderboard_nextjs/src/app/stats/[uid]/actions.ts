@@ -3,10 +3,11 @@
 import { redirect } from "next/navigation";
 import { formSchema } from "./formSchema";
 import { revalidateTag } from "next/cache";
+import { endpoints } from "@/lib/api";
 
-const delay = (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
+// const delay = (ms: number) => {
+//   return new Promise((resolve) => setTimeout(resolve, ms));
+// };
 
 export type FormState = {
   message: string;
@@ -41,16 +42,13 @@ export async function mutateKillCount(
   }
 
   // await delay(2000);
-  const response = await fetch(
-    `http://localhost:3001/stats/${parsed.data.id}`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ killCount: parsed.data.killCount }),
-    }
-  );
+  const response = await fetch(endpoints.stats + "/" + parsed.data.id, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ killCount: parsed.data.killCount }),
+  });
 
   if (!response.ok) {
     return { message: "issue with submission" };

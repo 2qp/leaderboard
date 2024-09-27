@@ -18,14 +18,15 @@ type TopCardType = (props: TopCardProps) => JSX.Element;
 
 const TopCard: TopCardType = ({ data = [] }) => {
   //
-  if (data.length === 0) {
-    return <div className=" flex justify-center">{"no data"}</div>;
-  }
 
   const maxValue = useMemo(
     () => Math.max(...data.map((item) => item.value)),
     [data]
   );
+
+  if (data.length === 0) {
+    return <div className=" flex justify-center">{"no data"}</div>;
+  }
 
   return (
     <div className="flex justify-around items-end px-5 pt-5">

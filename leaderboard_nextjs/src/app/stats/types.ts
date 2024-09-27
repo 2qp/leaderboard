@@ -7,12 +7,12 @@ type UserDataHistory = {
   timestamp: string;
 };
 
-interface UserData {
+type UserData = {
   userId: number;
   userName: string;
   avatarUrl: string;
   killCount: number;
-}
+};
 
 type Stats = {
   place: number;
